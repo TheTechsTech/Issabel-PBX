@@ -1,0 +1,20 @@
+[commercial-addons]
+name=Commercial Addons RPM Repository for Elastix
+mirrorlist=http://mirror.issabel.org/?release=4&arch=$basearch&repo=commercial_addons
+#baseurl=http://repo.issabel.org/issabel/4/commercial_addons/$basearch/
+gpgcheck=1
+enabled=1
+gpgkey=http://repo.issabel.org/issabel/RPM-GPG-KEY-Issabel
+
+[LowayResearch]
+name=Loway Research Yum Repository
+baseurl=http://yum.loway.ch/RPMS
+gpgcheck=0
+enabled=1
+
+[iperfex]
+name=IPERFEX RPMs repository
+baseurl=http://packages.iperfex.com/centos/$releasever/$basearch/
+gpgkey=http://packages.iperfex.com/RPM-GPG-KEY-iperfex-repository
+enabled=1
+gpgcheck=1
