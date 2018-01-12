@@ -22,7 +22,7 @@ docker run --name issabel \
 -v issabel-etc:/etc -v issabel-www:/var/www \
 -v issabel-log:/var/log -v issabel-lib:/var/lib \
 -v issabel-home:/home -v /etc/resolv.conf:/etc/resolv.conf:ro \
---cap-add=NET_ADMIN --restart=always --hostname=unified.pbx.host -d technoexpress/issabel-4
+--cap-add=NET_ADMIN --restart=always --hostname=unified.pbx.host -d technoexpress/Issabel-PBX
 ```
 
 This build also assume reverse proxy is setup. 
@@ -34,3 +34,6 @@ This build setup to use https://github.com/adi90x/rancher-active-proxy
 -l rap.le_host=unified.pbx.host \
 -l rap.https_method=noredirect \
 ```
+
+### Docker Hub
+https://hub.docker.com/r/technoexpress/issabel-pbx/builds/ automatically builds the latest changes into images which can easily be pulled and ran with a simple `docker run` command. 
