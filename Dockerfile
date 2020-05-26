@@ -1,5 +1,6 @@
 FROM centos:7
-MAINTAINER Lawrence Stubbs <technoexpressnet@gmail.com>
+
+LABEL maintainer="technoexpressnet@gmail.com"
  
 RUN rpm -Uvh https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm \
     && yum install -y wget \ 
