@@ -72,7 +72,6 @@ RUN systemctl start httpd \
 
 RUN systemctl start httpd \
     && systemctl start mariadb \
-    && mv /etc/asterisk/extensions_custom.conf.sample /etc/asterisk/extensions_custom.conf \
     && yum -y install issabel-callcenter fop2 issabel-roomx \
     && systemctl stop httpd \
     && systemctl stop mariadb \
