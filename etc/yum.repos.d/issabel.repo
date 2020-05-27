@@ -2,7 +2,7 @@
 name=Base RPM Repository for Issabel
 mirrorlist=http://mirror.issabel.org/?release=4&arch=$basearch&repo=base
 #baseurl=http://repo.issabel.org/issabel/4/base/$basearch/
-gpgcheck=0
+gpgcheck=1
 enabled=1
 gpgkey=http://repo.issabel.org/issabel/RPM-GPG-KEY-Issabel
 
@@ -10,25 +10,17 @@ gpgkey=http://repo.issabel.org/issabel/RPM-GPG-KEY-Issabel
 name=Updates RPM Repository for Issabel
 mirrorlist=http://mirror.issabel.org/?release=4&arch=$basearch&repo=updates
 #baseurl=http://repo.issabel.org/issabel/4/updates/$basearch/
-gpgcheck=0
-enabled=1
-gpgkey=http://repo.issabel.org/issabel/RPM-GPG-KEY-Issabel
-
-[issabel-updates-sources]
-name=Updates RPM Repository for Issabel
-mirrorlist=http://mirror.issabel.org/?release=4&arch=$basearch&repo=updates
-#baseurl=http://repo.issabel.org/issabel/4/updates/SRPMS/
-gpgcheck=0
+gpgcheck=1
 enabled=1
 gpgkey=http://repo.issabel.org/issabel/RPM-GPG-KEY-Issabel
 
 [issabel-beta]
 name=Beta RPM Repository for Issabel
 mirrorlist=http://mirror.issabel.org/?release=4&arch=$basearch&repo=beta
-baseurl=http://repo.issabel.org/issabel/4/beta/$basearch/
-#gpgcheck=1
+#baseurl=http://repo.issabel.org/issabel/4/beta/$basearch/
+gpgcheck=1
 enabled=1
-#gpgkey=http://repo.issabel.org/issabel/RPM-GPG-KEY-Issabel
+gpgkey=http://repo.issabel.org/issabel/RPM-GPG-KEY-Issabel
 
 [issabel-extras]
 name=Extras RPM Repository for Issabel
@@ -37,11 +29,3 @@ mirrorlist=http://mirror.issabel.org/?release=4&arch=$basearch&repo=extras
 gpgcheck=1
 enabled=1
 gpgkey=http://repo.issabel.org/issabel/RPM-GPG-KEY-Issabel
-
-[issabel-deprecated]
-name=Deprecated RPM Repository for Issabel 
-mirrorlist=http://mirror.issabel.org/?release=4&arch=$basearch&repo=deprecated
-#baseurl=http://repo.issabel.org/issabel/4/deprecated/$basearch/
-gpgcheck=1
-enabled=1
-gpgkey=http://repo.issabel.org/issabel/RPM-GPG-KEY-Elastix

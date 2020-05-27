@@ -1,16 +1,16 @@
 FROM centos:7
 
 LABEL maintainer="technoexpressnet@gmail.com"
- 
+
 RUN rpm -Uvh https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm \
-    && yum install -y wget \ 
+    && yum install -y wget \
     && rpm -Uvh http://repo.iotti.biz/CentOS/7/noarch/lux-release-7-1.noarch.rpm \
     && rpm --import /etc/pki/rpm-gpg/RPM-GPG-KEY-LUX \
     && wget -q http://www.webmin.com/jcameron-key.asc \
     && rpm --import jcameron-key.asc \
     && wget -q http://repo.issabel.org/issabel/RPM-GPG-KEY-Issabel \
     && rpm --import RPM-GPG-KEY-Issabel \
-    && rm -f jcameron-key.asc && rm -f RPM-GPG-KEY-Issabel 
+    && rm -f jcameron-key.asc && rm -f RPM-GPG-KEY-Issabel
 
 COPY etc /etc/
 
@@ -22,9 +22,9 @@ RUN yum -y install acl alsa-firmware alsa-lib alsa-tools-firmware apr apr-util t
 
 RUN yum -y install php-jpgraph php-fedora-autoloader php-IDNA_Convert php-Smarty php-PHPMailer php-pear-DB php-simplepie php-tcpdf php php-bcmath php-imap php-cli php-common php-soap php-devel php-mcrypt php-intl php-mysql php-pdo php-pear php-pecl-imagick php-process php-xml php-magpierss php-gd php-mbstring php-tidy php-adodb php-ldap php-google-apiclient
 
-RUN yum -y update 
+RUN yum -y update
 
-# Fixes issue with running systemD inside docker builds 
+# Fixes issue with running systemD inside docker builds
 # From https://github.com/gdraheim/docker-systemctl-replacement
 COPY systemctl.py /usr/bin/systemctl.py
 
@@ -36,7 +36,7 @@ RUN cp -f /usr/bin/systemctl /usr/bin/systemctl.original \
     && sed -i 's|\\||' /etc/init.d/mysqld \
     && echo "service mariadb \$1" >> /etc/init.d/mysqld \
     && chmod +x /etc/init.d/mysqld
-    
+
 RUN systemctl.original enable mariadb.service httpd.service \
     && systemctl start httpd \
     && systemctl start mariadb \
@@ -47,18 +47,18 @@ RUN systemctl.original enable mariadb.service httpd.service \
 	&& mysql -piSsAbEl.2o17 -e "GRANT ALL PRIVILEGES ON asterisk.* TO asteriskuser@localhost;" \
     && mysql -piSsAbEl.2o17 -e "GRANT ALL PRIVILEGES ON asteriskcdrdb.* TO asteriskuser@localhost;" \
     && adduser asterisk -m -c "Asterisk User" \
-    && yum -y install asterisk13 \
+    && yum -y install asterisk16 \
     && mkdir -p /var/www/db \
     && mkdir -p /var/log/asterisk/mod \
     && touch /var/www/db/fax.db /var/www/db/email.db /var/www/db/control_panel_design.db /var/log/asterisk/issabelpbx.log /var/lib/asterisk/moh \
     && chown -R asterisk.asterisk /var/www/html \
     && chown -R asterisk.asterisk /etc/asterisk \
     && chown -R asterisk.asterisk /var/lib/asterisk \
-    && chown -R asterisk.asterisk /var/log/asterisk \    
+    && chown -R asterisk.asterisk /var/log/asterisk \
     && sed -i 's@ulimit @#ulimit @' /usr/sbin/safe_asterisk \
     && systemctl stop httpd \
-    && systemctl stop mariadb 
-	
+    && systemctl stop mariadb
+
 COPY mya2billing_schema.sql /tmp/
 COPY mya2billing_update.sql /tmp/
 RUN systemctl start httpd \
@@ -69,7 +69,7 @@ RUN systemctl start httpd \
     && systemctl stop httpd \
     && systemctl stop mariadb \
     && rm -f /etc/yum.repos.d/Issabel.repo
-	
+
 RUN systemctl start httpd \
     && systemctl start mariadb \
     && mv /etc/asterisk/extensions_custom.conf.sample /etc/asterisk/extensions_custom.conf \
@@ -77,17 +77,17 @@ RUN systemctl start httpd \
     && systemctl stop httpd \
     && systemctl stop mariadb \
     && systemctl stop mysqld
-	
+
 RUN yum -y install webmin yum-versionlock \
     && yum versionlock systemd
 
 RUN systemctl start httpd \
     && systemctl start mysqld \
-	&& rm -f /etc/issabel.conf \ 
+	&& rm -f /etc/issabel.conf \
 	&& mysql -piSsAbEl.2o17 -e "SET PASSWORD FOR 'root'@'localhost' = PASSWORD('')" \
 	&& issabel-admin-passwords --cli change 'iSsAbEl.2o17' 'issabel-4' \
     && systemctl stop httpd \
-    && systemctl stop mysqld 
+    && systemctl stop mysqld
 
 RUN systemctl stop dbus \
     && systemctl.original disable dbus avahi-daemon chronyd ntpd dkms mdmonitor issabel-firstboot a2b-callback-daemon \
@@ -102,11 +102,11 @@ RUN systemctl stop dbus \
     rm -f /etc/dbus-1/system.d/*; \
     rm -f /etc/systemd/system/dbus-org.freedesktop.Avahi.service; \
     rm -f /etc/systemd/system/sockets.target.wants/*;
-    
+
 #VOLUME [ "/sys/fs/cgroup" ]
 
 COPY postfix.main.cf /etc/postfix/main.cf
-COPY postfix.master.cf /etc/postfix/master.cf    
+COPY postfix.master.cf /etc/postfix/master.cf
 
 RUN chmod 6711 /usr/bin/procmail \
     && chown root:root /usr/bin/procmail \
@@ -129,17 +129,15 @@ RUN chmod 6711 /usr/bin/procmail \
     && chmod +x /etc/containerstartup.sh \
     && mv -f /etc/containerstartup.sh /containerstartup.sh \
     && rm -f /tmp/mya2billing_* \
-    && echo "root:issabel" | chpasswd 
+    && echo "root:issabel" | chpasswd
 
 ENV container docker
 ENV HTTPPORT=880
 ENV SSLPORT=4443
 ENV SSHPORT=2122
-ENV WEBMINPORT=9900  
+ENV WEBMINPORT=9900
 
 EXPOSE 25 880 4443 465 2122 5038 5060/tcp 5060/udp 5061/tcp 5061/udp 8001 8003 8088 8089 9900/tcp 9900/udp 10000-10100/tcp 10000-10100/udp
 
 ENTRYPOINT ["/usr/bin/systemctl","default","--init"]
 #CMD ["/usr/bin/bash"]
-
- 
