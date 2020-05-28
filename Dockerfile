@@ -102,8 +102,6 @@ RUN systemctl stop dbus \
     rm -f /etc/systemd/system/dbus-org.freedesktop.Avahi.service; \
     rm -f /etc/systemd/system/sockets.target.wants/*;
 
-#VOLUME [ "/sys/fs/cgroup" ]
-
 COPY postfix.main.cf /etc/postfix/main.cf
 COPY postfix.master.cf /etc/postfix/master.cf
 
@@ -123,7 +121,7 @@ RUN chmod 6711 /usr/bin/procmail \
     && sed -i "s#9000 -j ACCEPT#9900 -j ACCEPT\n-A INPUT -p udp -m multiport --dports 9900 -j ACCEPT#" /etc/sysconfig/iptables \
     && sed -i 's#issabeldialer.service webmin.service#issabeldialer.service\nAfter=crond.service\nAfter=postfix.service\nAfter=mariadb.service\nAfter=saslauthd.service\nAfter=cyrus-imapd.service\nAfter=httpd.service\nAfter=fail2ban.service\nAfter=denyhosts.service\nAfter=sshd-keygen.service\nAfter=sshd.service\nAfter=asterisk.service\nAfter=fop2.service\nAfter=hylafax.service\nAfter=wakeup_survey\nAfter=webmin.service#' /etc/systemd/system/containerstartup.service \
     && chown -R asterisk.asterisk /var/www/db  \
-    && systemctl.original enable denyhosts.service fail2ban.service mariadb.service asterisk.service httpd.service issabeldialer.service fop2.service hylafax.service wakeup_survey crond.service postfix.service saslauthd.service cyrus-imapd.service sshd-keygen.service sshd.service \
+    && systemctl.original enable denyhosts.service fail2ban.service mariadb.service asterisk.service httpd.service issabeldialer.service fop2.service hylafax.service wakeup_survey crond.service postfix.service saslauthd.service cyrus-imapd.service sshd-keygen.service sshd.service webmin.service containerstartup.service \
     && sed -i 's#localhost.key#localhost.key\ncat \"/etc/letsencrypt/archive/$HOSTNAME/privkey1.pem\" \"/etc/letsencrypt/archive/$HOSTNAME/cert1.pem\" >/etc/webmin/miniserv.pem#' /etc/containerstartup.sh \
     && chmod +x /etc/containerstartup.sh \
     && mv -f /etc/containerstartup.sh /containerstartup.sh \
@@ -139,4 +137,3 @@ ENV WEBMINPORT=9900
 EXPOSE 25 880 4443 465 2122 5038 5060/tcp 5060/udp 5061/tcp 5061/udp 8001 8003 8088 8089 9900/tcp 9900/udp 10000-10100/tcp 10000-10100/udp
 
 ENTRYPOINT ["/usr/bin/systemctl","default","--init"]
-#CMD ["/usr/bin/bash"]
