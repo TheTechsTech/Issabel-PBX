@@ -16,13 +16,13 @@ COPY etc /etc/
 
 RUN yum -y --disablerepo=iperfex install perl perl-Archive-Tar perl-Business-ISBN perl-Business-ISBN-Data perl-Carp perl-CGI perl-Compress-Raw-Bzip2 perl-Compress-Raw-Zlib perl-constant perl-Convert-BinHex perl-Crypt-OpenSSL-Bignum perl-Crypt-OpenSSL-Random perl-Crypt-OpenSSL-RSA perl-Data-Dumper perl-Date-Manip perl-DBD-MySQL perl-DB_File perl-DBI perl-devel perl-Digest perl-Digest-HMAC perl-Digest-MD5 perl-Digest-SHA perl-Encode perl-Encode-Detect perl-Encode-Locale perl-Error perl-Exporter perl-ExtUtils-Install perl-ExtUtils-MakeMaker perl-ExtUtils-Manifest perl-ExtUtils-ParseXS perl-FCGI perl-File-Listing perl-File-Path perl-File-Temp perl-Filter perl-Getopt-Long perl-HTML-Parser perl-HTML-Tagset perl-HTTP-Cookies perl-HTTP-Daemon perl-HTTP-Date perl-HTTP-Message perl-HTTP-Negotiate perl-HTTP-Tiny perl-IO-Compress perl-IO-HTML perl-IO-Socket-INET6 perl-IO-Socket-IP perl-IO-Socket-SSL perl-IO-Zlib perl-libs perl-libwww-perl perl-LWP-MediaTypes perl-macros perl-Mail-DKIM perl-Mail-IMAPClient perl-Mail-SPF perl-MailTools perl-MIME-tools perl-NetAddr-IP perl-Net-Daemon perl-Net-DNS perl-Net-HTTP perl-Net-LibIDN perl-Net-SMTP-SSL perl-Net-SSLeay perl-Package-Constants perl-parent perl-Parse-RecDescent perl-PathTools perl-PlRPC perl-Pod-Escapes perl-podlators perl-Pod-Perldoc perl-Pod-Simple perl-Pod-Usage perl-Scalar-List-Utils perl-Socket perl-Socket6 perl-Storable perl-Sys-Syslog perl-Test-Harness perl-Text-ParseWords perl-threads perl-threads-shared perl-TimeDate perl-Time-HiRes perl-Time-Local perl-URI perl-version perl-WWW-RobotRules
 
-RUN yum -y install python python-inotify python-backports python-backports-ssl_match_hostname python-cjson python-configobj python-crypto python-daemon python-decorator python-ecdsa python-eventlet python-greenlet python-iniparse python-libs python-lockfile python-paramiko python-pycurl python-pyudev python-setuptools python-six python-slip python-slip-dbus python-sqlalchemy python-tempita python-urlgrabber python-simplejson python-dns certbot python2-certbot python2-certbot-apache
+RUN yum -y --disablerepo=iperfex install python python-inotify python-backports python-backports-ssl_match_hostname python-cjson python-configobj python-crypto python-daemon python-decorator python-ecdsa python-eventlet python-greenlet python-iniparse python-libs python-lockfile python-paramiko python-pycurl python-pyudev python-setuptools python-six python-slip python-slip-dbus python-sqlalchemy python-tempita python-urlgrabber python-simplejson python-dns certbot python2-certbot python2-certbot-apache
 
-RUN yum -y install acl alsa-firmware alsa-lib alsa-tools-firmware apr apr-util tcpdump screen libXcomposite mod_ssl openfire avahi-devel bash-completion mc mdadm nss-mdns chrony cyrus-sasl cyrus-sasl-plain procmail dos2unix gdb hdparm httpd httpd-tools ipset lame lame-devel libxml2-devel mariadb mariadb-server opus vim git uuid-devel libuuid-devel libesd.so.0 flac mpg123 unixODBC unixODBC-devel libtool-ltdl libtool-ltdl-devel mysql-connector-odbc dmidecode openssh-server iptables-utils iptables-services initscripts elfutils-libelf elfutils-libs glances htop sysstat net-tools fail2ban-server fail2ban-hostsdeny denyhosts whois
+RUN yum -y --disablerepo=iperfex install acl alsa-firmware alsa-lib alsa-tools-firmware apr apr-util tcpdump screen libXcomposite mod_ssl openfire avahi-devel bash-completion mc mdadm nss-mdns chrony cyrus-sasl cyrus-sasl-plain procmail dos2unix gdb hdparm httpd httpd-tools ipset lame lame-devel libxml2-devel mariadb mariadb-server opus vim git uuid-devel libuuid-devel libesd.so.0 flac mpg123 unixODBC unixODBC-devel libtool-ltdl libtool-ltdl-devel mysql-connector-odbc dmidecode openssh-server iptables-utils iptables-services initscripts elfutils-libelf elfutils-libs glances htop sysstat net-tools fail2ban-server fail2ban-hostsdeny denyhosts whois
 
-RUN yum -y install php-jpgraph php-fedora-autoloader php-IDNA_Convert php-Smarty php-PHPMailer php-pear-DB php-simplepie php-tcpdf php php-bcmath php-imap php-cli php-common php-soap php-devel php-mcrypt php-intl php-mysql php-pdo php-pear php-pecl-imagick php-process php-xml php-magpierss php-gd php-mbstring php-tidy php-adodb php-ldap php-google-apiclient
+RUN yum -y --disablerepo=iperfex install php-jpgraph php-fedora-autoloader php-IDNA_Convert php-Smarty php-PHPMailer php-pear-DB php-simplepie php-tcpdf php php-bcmath php-imap php-cli php-common php-soap php-devel php-mcrypt php-intl php-mysql php-pdo php-pear php-pecl-imagick php-process php-xml php-magpierss php-gd php-mbstring php-tidy php-adodb php-ldap php-google-apiclient
 
-RUN yum -y update
+RUN yum -y --disablerepo=iperfex update
 
 # Fixes issue with running systemD inside docker builds
 # From https://github.com/gdraheim/docker-systemctl-replacement
@@ -47,7 +47,8 @@ RUN systemctl.original enable mariadb.service httpd.service \
 	&& mysql -piSsAbEl.2o17 -e "GRANT ALL PRIVILEGES ON asterisk.* TO asteriskuser@localhost;" \
     && mysql -piSsAbEl.2o17 -e "GRANT ALL PRIVILEGES ON asteriskcdrdb.* TO asteriskuser@localhost;" \
     && adduser asterisk -m -c "Asterisk User" \
-    && yum -y install libresample asterisk13 \
+    && yum -y --disablerepo=iperfex install ftp://ftp.pbone.net/mirror/rnd.rajven.net/centos/7.0.1406/os/x86_64/libresample-0.1.3-22cnt7.x86_64.rpm \
+    && yum -y --disablerepo=iperfex install asterisk13 \
     && mkdir -p /var/www/db \
     && mkdir -p /var/log/asterisk/mod \
     && touch /var/www/db/fax.db /var/www/db/email.db /var/www/db/control_panel_design.db /var/log/asterisk/issabelpbx.log /var/lib/asterisk/moh \
@@ -65,7 +66,7 @@ RUN systemctl start httpd \
     && systemctl start mariadb \
     && mysql -piSsAbEl.2o17 < /tmp/mya2billing_schema.sql \
     && mysql -piSsAbEl.2o17 < /tmp/mya2billing_update.sql \
-    && yum -y install issabel issabel-a2billing issabel-a2billing-callback_daemon issabel-addons issabel-agenda issabel-asterisk-sounds issabel-email_admin issabel-endpointconfig2 issabel-extras issabel-fax issabel-firstboot issabel-framework issabel-im issabel-my_extension issabel-pbx issabel-portknock issabel-reports issabel-security issabel-system \
+    && yum -y --disablerepo=iperfex install issabel issabel-a2billing issabel-a2billing-callback_daemon issabel-addons issabel-agenda issabel-asterisk-sounds issabel-email_admin issabel-endpointconfig2 issabel-extras issabel-fax issabel-firstboot issabel-framework issabel-im issabel-my_extension issabel-pbx issabel-portknock issabel-reports issabel-security issabel-system \
     && systemctl stop httpd \
     && systemctl stop mariadb \
     && rm -f /etc/yum.repos.d/Issabel.repo
@@ -73,12 +74,12 @@ RUN systemctl start httpd \
 RUN systemctl start httpd \
     && systemctl start mariadb \
     && mv /etc/asterisk/extensions_custom.conf.sample /etc/asterisk/extensions_custom.conf \
-    && yum -y install issabel-callcenter fop2 issabel-roomx \
+    && yum -y --disablerepo=iperfex install issabel-callcenter fop2 issabel-roomx \
     && systemctl stop httpd \
     && systemctl stop mariadb \
     && systemctl stop mysqld
 
-RUN yum -y install webmin yum-versionlock \
+RUN yum -y --disablerepo=iperfex install webmin yum-versionlock \
     && yum versionlock systemd
 
 RUN systemctl start httpd \
