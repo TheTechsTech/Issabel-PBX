@@ -47,7 +47,8 @@ RUN systemctl.original enable mariadb.service httpd.service \
 	&& mysql -piSsAbEl.2o17 -e "GRANT ALL PRIVILEGES ON asterisk.* TO asteriskuser@localhost;" \
     && mysql -piSsAbEl.2o17 -e "GRANT ALL PRIVILEGES ON asteriskcdrdb.* TO asteriskuser@localhost;" \
     && adduser asterisk -m -c "Asterisk User" \
-    && yum -y install asterisk16 \
+    && yum -y install libresample \
+    && yum -y install asterisk16 --skip-broken \
     && mkdir -p /var/www/db \
     && mkdir -p /var/log/asterisk/mod \
     && touch /var/www/db/fax.db /var/www/db/email.db /var/www/db/control_panel_design.db /var/log/asterisk/issabelpbx.log /var/lib/asterisk/moh \
