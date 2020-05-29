@@ -48,7 +48,7 @@ RUN systemctl.original enable mariadb.service httpd.service \
     && mysql -piSsAbEl.2o17 -e "GRANT ALL PRIVILEGES ON asteriskcdrdb.* TO asteriskuser@localhost;" \
     && adduser asterisk -m -c "Asterisk User" \
     && yum -y --disablerepo=iperfex install ftp://ftp.pbone.net/mirror/rnd.rajven.net/centos/7.0.1406/os/x86_64/libresample-0.1.3-22cnt7.x86_64.rpm \
-    && yum -y --disablerepo=iperfex install asterisk13 \
+    && yum -y --disablerepo=iperfex install asterisk16 \
     && mkdir -p /var/www/db \
     && mkdir -p /var/log/asterisk/mod \
     && touch /var/www/db/fax.db /var/www/db/email.db /var/www/db/control_panel_design.db /var/log/asterisk/issabelpbx.log /var/lib/asterisk/moh \
@@ -122,11 +122,9 @@ RUN chmod 6711 /usr/bin/procmail \
     && sed -i "s#9000 -j ACCEPT#9000 -j ACCEPT\n-A INPUT -p tcp -m multiport --dports 2122 -j ACCEPT#" /etc/sysconfig/iptables \
     && sed -i "s#9000 -j ACCEPT#9900 -j ACCEPT\n-A INPUT -p udp -m multiport --dports 9900 -j ACCEPT#" /etc/sysconfig/iptables \
     && sed -i 's#issabeldialer.service webmin.service#issabeldialer.service\nAfter=crond.service\nAfter=postfix.service\nAfter=mariadb.service\nAfter=saslauthd.service\nAfter=cyrus-imapd.service\nAfter=httpd.service\nAfter=fail2ban.service\nAfter=denyhosts.service\nAfter=sshd-keygen.service\nAfter=sshd.service\nAfter=asterisk.service\nAfter=fop2.service\nAfter=hylafax.service\nAfter=wakeup_survey\nAfter=webmin.service#' /etc/systemd/system/containerstartup.service \
-    && chown -R asterisk.asterisk /var/www/db
-
-RUN systemctl.original enable fail2ban.service mariadb.service asterisk.service httpd.service containerstartup.service
-
-RUN sed -i 's#localhost.key#localhost.key\ncat \"/etc/letsencrypt/archive/$HOSTNAME/privkey1.pem\" \"/etc/letsencrypt/archive/$HOSTNAME/cert1.pem\" >/etc/webmin/miniserv.pem#' /etc/containerstartup.sh \
+    && chown -R asterisk.asterisk /var/www/db \
+    && systemctl.original enable fail2ban.service mariadb.service asterisk.service httpd.service issabeldialer.service fop2.service hylafax.service wakeup_survey crond.service postfix.service saslauthd.service cyrus-imapd.service sshd-keygen.service sshd.service webmin.service containerstartup.service \
+    && sed -i 's#localhost.key#localhost.key\ncat \"/etc/letsencrypt/archive/$HOSTNAME/privkey1.pem\" \"/etc/letsencrypt/archive/$HOSTNAME/cert1.pem\" >/etc/webmin/miniserv.pem#' /etc/containerstartup.sh \
     && chmod +x /etc/containerstartup.sh \
     && mv -f /etc/containerstartup.sh /containerstartup.sh \
     && rm -f /tmp/mya2billing_* \
