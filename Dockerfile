@@ -124,7 +124,7 @@ RUN chmod 6711 /usr/bin/procmail \
     && sed -i 's#issabeldialer.service webmin.service#issabeldialer.service\nAfter=crond.service\nAfter=postfix.service\nAfter=mariadb.service\nAfter=saslauthd.service\nAfter=cyrus-imapd.service\nAfter=httpd.service\nAfter=fail2ban.service\nAfter=denyhosts.service\nAfter=sshd-keygen.service\nAfter=sshd.service\nAfter=asterisk.service\nAfter=fop2.service\nAfter=hylafax.service\nAfter=wakeup_survey\nAfter=webmin.service#' /etc/systemd/system/containerstartup.service \
     && chown -R asterisk.asterisk /var/www/db
 
-RUN systemctl.original enable denyhosts.service fail2ban.service mariadb.service asterisk.service httpd.service issabeldialer.service crond.service postfix.service saslauthd.service cyrus-imapd.service sshd-keygen.service sshd.service containerstartup.service \
+RUN systemctl.original enable denyhosts.service fail2ban.service mariadb.service asterisk.service httpd.service \
     && sed -i 's#localhost.key#localhost.key\ncat \"/etc/letsencrypt/archive/$HOSTNAME/privkey1.pem\" \"/etc/letsencrypt/archive/$HOSTNAME/cert1.pem\" >/etc/webmin/miniserv.pem#' /etc/containerstartup.sh \
     && chmod +x /etc/containerstartup.sh \
     && mv -f /etc/containerstartup.sh /containerstartup.sh \
